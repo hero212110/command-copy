@@ -20,13 +20,13 @@
   </head>
   <body>
     <div id="app" class="main-wrapper">
-      <button class="edit-btn" :class="{active:edit}" @click="setEdit">
+      <button class="edit-btn" :class="{active:edit}" @click="setEdit" title="編輯/複製">
         <img
           :src="edit ? 'https://cdn-icons-png.flaticon.com/512/907/907027.png' : 'https://cdn-icons-png.flaticon.com/512/420/420140.png' "
           alt=""
         />
       </button>
-      <button class="clear-btn" @click="clear">
+      <button class="clear-btn" @click="clear" title="清除全部">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1619/1619829.png"
           alt=""

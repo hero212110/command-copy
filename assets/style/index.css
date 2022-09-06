@@ -278,6 +278,11 @@ body #toast-container {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     height: auto;
+    padding-top: 110px;
+  }
+  .main-wrapper .clear-btn {
+    top: 10px;
+    left: 80px;
   }
   .main-wrapper .common-wrapper {
     width: 100%;
