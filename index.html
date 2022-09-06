@@ -56,7 +56,10 @@
               placeholder="請輸入內容"
             />
           </div>
-          <i class="fas fa-copy" :class="{ 'fa-copy':!edit , 'fa-pen-square':edit }"></i>
+          <i
+            class="fas fa-copy"
+            :class="{ 'fa-copy':!edit , 'fa-pen-square':edit }"
+          ></i>
         </div>
       </div>
 
@@ -212,7 +215,7 @@
         },
         clear() {
           this.commonList = [
-          { title: "", text: "" },
+            { title: "", text: "" },
             { title: "", text: "" },
             { title: "", text: "" },
             { title: "", text: "" },
