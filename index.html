@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>常用語法複製</title>
+    <link rel="icon" href="/assets/images/copy.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <link rel="stylesheet" href="./assets/style/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="app" class="main-wrapper">
+      <button class="edit-btn" :class="{active:edit}" @click="setEdit">
+        <img
+          :src="edit ? 'https://cdn-icons-png.flaticon.com/512/907/907027.png' : 'https://cdn-icons-png.flaticon.com/512/420/420140.png' "
+          alt=""
+        />
+      </button>
+      <button class="clear-btn" @click="clear">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1619/1619829.png"
+          alt=""
+        />
+      </button>
+
+      <div class="common-wrapper">
+        <div
+          class="command-wrapper"
+          v-for="(item,index) in commonList"
+          :key="index"
+          @click="copyTxt(item.text)"
+        >
+          <input
+            type="text"
+            v-model="item.title"
+            :disabled="!edit"
+            :class="{ active:edit }"
+            placeholder="請輸入標題"
+          />
+          <div>
+            <input
+              type="text"
+              v-model="item.text"
+              :disabled="!edit"
+              :class="{ active:edit }"
+              placeholder="請輸入內容"
+            />
+          </div>
+          <i class="fas fa-copy" :class="{ 'fa-copy':!edit , 'fa-pen-square':edit }"></i>
+        </div>
+      </div>
+
+      <div class="git-wrapper">
+        <div class="basic-git-wrapper">
+          <span class="title-txt">Git 常用指令</span>
+          <el-checkbox-group v-model="checkedList" style="margin-top: 10px">
+            <el-checkbox v-for="i in typeList" :label="i" :key="i">
+              {{i}}
+            </el-checkbox>
+          </el-checkbox-group>
+          <div
+            class="command-wrapper"
+            data-label=""
+            @click="commonGitCommand"
+            style="margin-top: 20px"
+          >
+            <div>
+              <span class="full-width">git add .</span>
+              <span class="full-width"
+                >git commit -m "update{{commonGitTxt}}"</span
+              >
+              <span class="full-width">git push</span>
+            </div>
+            <i class="fas fa-copy"></i>
+          </div>
+        </div>
+
+        <div class="advance-git-wrapper">
+          <span class="title-txt">Git 自訂指令</span>
+          <div
+            class="command-wrapper"
+            data-label=""
+            @click="advanceGitCommand"
+            style="margin-top: 20px"
+          >
+            <div>
+              <span class="full-width">{{textarea}}</span>
+            </div>
+            <i class="fas fa-copy"></i>
+          </div>
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 5, maxRows: 10}"
+            placeholder="請輸入"
+            v-model="textarea"
+          >
+          </el-input>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/assets/js/vue.js"></script>
+  <script src="/assets/js/element-ui/index.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: function () {
+        return {
+          edit: false,
+          commonList: [
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+          ],
+          checkedList: [],
+          typeList: ["config", "css", "img", "txt"],
+          textarea: "git add .",
+        };
+      },
+      computed: {
+        commonGitTxt() {
+          let tmp = "";
+          this.checkedList.forEach((item) => {
+            tmp += ` ${item},`;
+          });
+          tmp = tmp.substr(0, tmp.length - 1);
+          return tmp;
+        },
+      },
+      watch: {
+        commonList: {
+          handler: function (val, oldVal) {
+            this.save();
+          },
+          deep: true,
+        },
+      },
+      methods: {
+        commonGitCommand() {
+          let tmp = `
+            git add .
+            git commit -m "update ${this.commonGitTxt}"
+            git push
+            `;
+          this.copyTxt(tmp);
+        },
+        advanceGitCommand() {
+          this.copyTxt(this.textarea);
+        },
+        copyTxt(v) {
+          if (!this.edit) {
+            if (v) {
+              let clip_area = document.createElement("textarea");
+              clip_area.textContent = v;
+              document.body.appendChild(clip_area);
+              clip_area.select();
+              document.execCommand("copy");
+              clip_area.remove();
+              this.$message({
+                showClose: true,
+                message: "複製成功 !",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "請先輸入內容再複製 !",
+                type: "warning",
+              });
+            }
+          }
+        },
+        setEdit() {
+          this.edit = !this.edit;
+          if (this.edit) {
+            this.$message({
+              showClose: true,
+              message: "已啟用編輯模式 !",
+              type: "info",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "已啟用複製模式 !",
+              type: "info",
+            });
+          }
+        },
+        save() {
+          console.log(this.commonList);
+          let list = JSON.stringify(this.commonList);
+          localStorage.setItem("commonList", list);
+        },
+        restore() {
+          if (localStorage.getItem("commonList")) {
+            let list = JSON.parse(localStorage.getItem("commonList"));
+            this.commonList = list;
+          }
+        },
+        clear() {
+          this.commonList = [
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+            { title: "", text: "" },
+          ];
+          this.save();
+          this.$message({
+            showClose: true,
+            message: "已清空所有內容 !",
+            type: "info",
+          });
+        },
+      },
+      mounted() {
+        this.restore();
+      },
+    });
+  </script>
+</html>
