@@ -72,7 +72,7 @@ body {
   color: #495057;
   .edit-btn,
   .clear-btn {
-    background: #5B5B5B;
+    background: #5b5b5b;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -205,7 +205,7 @@ body {
     flex-wrap: wrap;
     height: auto;
     padding-top: 110px;
-    .clear-btn{
+    .clear-btn {
       top: 10px;
       left: 80px;
     }
@@ -218,8 +218,14 @@ body {
     }
   }
 }
-.active {
-  color: #409eff;
-  border: solid 1px #6C6C6C;
-  border-radius: 4px;
+input {
+  &.active {
+    color: #409eff;
+    border: solid 1px #6c6c6c;
+    border-radius: 4px;
+    pointer-events: all;
+  }
+  &:disabled {
+    pointer-events: none;
+  }
 }

@@ -93,7 +93,7 @@ body #toast-container {
 
 .main-wrapper .edit-btn,
 .main-wrapper .clear-btn {
-  background: #5B5B5B;
+  background: #5b5b5b;
   border-radius: 50%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -293,9 +293,14 @@ body #toast-container {
   }
 }
 
-.active {
+input.active {
   color: #409eff;
-  border: solid 1px #6C6C6C;
+  border: solid 1px #6c6c6c;
   border-radius: 4px;
+  pointer-events: all;
+}
+
+input:disabled {
+  pointer-events: none;
 }
 /*# sourceMappingURL=index.css.map */
